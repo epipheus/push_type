@@ -4,6 +4,22 @@ module PushType
       isolate_namespace PushType
       engine_name 'push_type'
 
+      # Rails.autoloaders.log!
+
+      # config.autoload_paths << File.expand_path("../../../app/controllers/concerns", __FILE__) <<
+      #                        # File.expand_path("../../../app/controllers/concerns/push_type", __FILE__)
+      #                        File.expand_path("../../../app/helpers", __FILE__)
+
+      config.autoload_once_paths <<    "#{root}/app/controllers/concerns"            <<
+                                      "#{root}/app/helpers"
+
+      # lib = root.join("lib")
+      # config.autoload_once_paths.ignore(
+      #   lib.join("assets"),
+      #   lib.join("tasks"),
+      #   lib.join("generators")
+      # )
+
       config.generators do |g|
         g.assets false
         g.helper false
@@ -26,6 +42,7 @@ module PushType
 
       initializer 'push_type.application_controller' do
         ActiveSupport.on_load :action_controller do
+          # ActionController::Base.send :include, PushType::ApplicationControllerMethods
           include PushType::ApplicationControllerMethods
         end
       end
